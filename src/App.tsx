@@ -28,7 +28,7 @@ const defaultPreferences: BuilderPreferences = {
   customIdeaPrompt: '',
 }
 
-const REPOS_PER_PAGE = 24
+const REPOS_PER_PAGE = 10
 
 const isCategory = (value: unknown): value is Category =>
   typeof value === 'string' && categories.some((category) => category.id === value)

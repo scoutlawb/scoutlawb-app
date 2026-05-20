@@ -145,7 +145,7 @@ export function RepoStream({
           previous
         </button>
         <span>
-          page {currentPage} / {totalPages} · {totalRepos.toLocaleString()} repos
+          {repos.length} shown · page {currentPage} / {totalPages} · {totalRepos.toLocaleString()} repos
         </span>
         <button
           type="button"

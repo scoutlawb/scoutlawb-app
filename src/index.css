@@ -921,7 +921,7 @@ p {
 
 .repo-row {
   border-bottom: 1px solid rgba(28, 36, 31, 0.75);
-  padding: 9px 12px;
+  padding: 8px 12px;
   background: var(--surface-2);
 }
 
@@ -1058,18 +1058,28 @@ p {
 .repo-pager {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
+  justify-content: space-between;
+  gap: 8px;
   border-top: 1px solid var(--line);
-  padding: 10px 12px;
-  background: var(--surface);
+  padding: 7px 12px;
+  background: rgba(8, 12, 9, 0.96);
 }
 
 .repo-pager span {
+  min-width: 0;
+  overflow: hidden;
   color: var(--muted);
-  font-size: 0.68rem;
+  font-size: 0.62rem;
   font-weight: 800;
+  text-align: center;
+  text-overflow: ellipsis;
   text-transform: lowercase;
+  white-space: nowrap;
+}
+
+.repo-pager .console-button {
+  min-height: 27px;
+  padding: 5px 9px;
 }
 
 .detail-panel,
