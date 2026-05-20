@@ -101,6 +101,7 @@ export type Idea = IdeaTemplate & {
 export type RepoStatus =
   | { kind: 'loading'; label: 'Syncing' | 'Updating' }
   | { kind: 'live'; label: 'Live' | 'Cached' }
+  | { kind: 'snapshot'; label: 'Snapshot'; message: string }
   | { kind: 'sample'; label: 'Sample Data' | 'Cached'; message: string }
   | { kind: 'error'; label: 'Error'; message: string }
 

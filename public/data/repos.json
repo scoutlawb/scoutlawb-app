@@ -1,0 +1,119 @@
+[
+  {
+    "id": "sample-minebean",
+    "name": "minebean-rounds",
+    "owner_did": "did:key:z6MkwVfgaAnuypajisEkJLkVbWPiPEBwceMkGutfXpEEYHKi",
+    "description": "Decentralized audit log of MineBean rounds on Base",
+    "star_count": 0,
+    "clone_url": "https://node.gitlawb.com/z6MkwVfgaAnuypajisEkJLkVbWPiPEBwceMkGutfXpEEYHKi/minebean-rounds.git",
+    "updated_at": "2026-05-20T10:40:31.480334429+00:00"
+  },
+  {
+    "id": "sample-ronins",
+    "name": "ronins-intelligence",
+    "owner_did": "did:key:z6Mkt9h2Y5UpVv459uNvdSEdLFHAutgadGS5FVHd37e8Tfvv",
+    "description": "AI-powered crypto research terminal",
+    "star_count": 0,
+    "clone_url": "https://node.gitlawb.com/z6Mkt9h2Y5UpVv459uNvdSEdLFHAutgadGS5FVHd37e8Tfvv/ronins-intelligence.git",
+    "updated_at": "2026-05-20T10:21:51.496781643+00:00"
+  },
+  {
+    "id": "sample-knowledge",
+    "name": "KnowledgeBase",
+    "owner_did": "did:key:z6Mkw1ZZPq5okkhV1WYxJpgwNWF31sCFEBQoohpBbPUcBp7e",
+    "description": "Global Knowledge Base for creative tech, design, and project knowledge",
+    "star_count": 0,
+    "clone_url": "https://node.gitlawb.com/z6Mkw1ZZPq5okkhV1WYxJpgwNWF31sCFEBQoohpBbPUcBp7e/KnowledgeBase.git",
+    "updated_at": "2026-05-20T09:08:03.544470924+00:00"
+  },
+  {
+    "id": "sample-studio",
+    "name": "mya-studio-v2",
+    "owner_did": "did:key:z6MknkD3dso91HCULNnNf4wcWGsVZGiDi1WYsMHVAdfkKuSX",
+    "description": "Creative studio app on GitLawb",
+    "star_count": 10,
+    "clone_url": "https://node.gitlawb.com/z6MknkD3dso91HCULNnNf4wcWGsVZGiDi1WYsMHVAdfkKuSX/mya-studio-v2.git",
+    "updated_at": "2026-05-20T05:55:42.829428926+00:00"
+  },
+  {
+    "id": "sample-nipmod",
+    "name": "nipmod",
+    "owner_did": "did:key:z6MkwbuduCUUwy8fp78CZ2pnhLyRSibkSjcCGexT355xNw5R",
+    "description": "Decentralized npm for agents on GitLawb",
+    "star_count": 2,
+    "clone_url": "https://node.gitlawb.com/z6MkwbuduCUUwy8fp78CZ2pnhLyRSibkSjcCGexT355xNw5R/nipmod.git",
+    "updated_at": "2026-05-20T05:04:06.252122705+00:00"
+  },
+  {
+    "id": "sample-voice",
+    "name": "voicenav-voice-browser",
+    "owner_did": "z6MkiHL6tqXvMyNPR4nVTSjkMH6k3PimiZxERKsj6CmSF4A8",
+    "description": "Voice navigation browser mirrored from peer",
+    "star_count": 0,
+    "clone_url": "https://node.gitlawb.com/z6MkiHL6tqXvMyNPR4nVTSjkMH6k3PimiZxERKsj6CmSF4A8/voicenav-voice-browser.git",
+    "updated_at": "2026-05-20T05:04:14.026896248+00:00"
+  },
+  {
+    "id": "sample-lesson",
+    "name": "lesson-lantern",
+    "owner_did": "did:key:z6Mki9mnS9Kvig5EPueJMYNULcCd9jzqodxFeAB9nV5LbLf4",
+    "description": "Local-first micro lesson planner for tutors and self-study groups",
+    "star_count": 0,
+    "clone_url": "https://node.gitlawb.com/z6Mki9mnS9Kvig5EPueJMYNULcCd9jzqodxFeAB9nV5LbLf4/lesson-lantern.git",
+    "updated_at": "2026-03-12T17:28:14.782480156+00:00"
+  },
+  {
+    "id": "sample-repair",
+    "name": "repair-circle",
+    "owner_did": "did:key:z6Mki9mnS9Kvig5EPueJMYNULcCd9jzqodxFeAB9nV5LbLf4",
+    "description": "Community repair event intake and progress tracker",
+    "star_count": 0,
+    "clone_url": "https://node.gitlawb.com/z6Mki9mnS9Kvig5EPueJMYNULcCd9jzqodxFeAB9nV5LbLf4/repair-circle.git",
+    "updated_at": "2026-03-12T16:35:23.892175860+00:00"
+  },
+  {
+    "id": "sample-robopass",
+    "name": "robopass",
+    "owner_did": "did:key:z6Mki9mnS9Kvig5EPueJMYNULcCd9jzqodxFeAB9nV5LbLf4",
+    "description": "An inverted CAPTCHA that blocks humans and lets bots through",
+    "star_count": 0,
+    "clone_url": "https://node.gitlawb.com/z6Mki9mnS9Kvig5EPueJMYNULcCd9jzqodxFeAB9nV5LbLf4/robopass.git",
+    "updated_at": "2026-03-12T15:08:55.972018761+00:00"
+  },
+  {
+    "id": "sample-atum",
+    "name": "atum-v1",
+    "owner_did": "did:key:z6MkhVVzT9ZFWL6Wh1fV4hVAxBrxr9FTNnpcYaFbGkTgEnMq",
+    "description": "ATUM v1: Autonomous Trading Agent",
+    "star_count": 0,
+    "clone_url": "https://node.gitlawb.com/z6MkhVVzT9ZFWL6Wh1fV4hVAxBrxr9FTNnpcYaFbGkTgEnMq/atum-v1.git",
+    "updated_at": "2026-03-12T15:31:37.851579510+00:00"
+  },
+  {
+    "id": "sample-food",
+    "name": "food-scanner",
+    "owner_did": "did:key:z6Mkopj6mhcMayipekXbTRFMZPM6Bsgy4FQZuN9fannXSLTC",
+    "description": "Nutrition analysis from photos",
+    "star_count": 0,
+    "clone_url": "https://node.gitlawb.com/z6Mkopj6mhcMayipekXbTRFMZPM6Bsgy4FQZuN9fannXSLTC/food-scanner.git",
+    "updated_at": "2026-03-13T01:12:47.841240838+00:00"
+  },
+  {
+    "id": "sample-deploy",
+    "name": "deploy-master",
+    "owner_did": "did:key:z6Mkopj6mhcMayipekXbTRFMZPM6Bsgy4FQZuN9fannXSLTC",
+    "description": "One-click deployment orchestrator",
+    "star_count": 0,
+    "clone_url": "https://node.gitlawb.com/z6Mkopj6mhcMayipekXbTRFMZPM6Bsgy4FQZuN9fannXSLTC/deploy-master.git",
+    "updated_at": "2026-03-13T01:12:45.605136911+00:00"
+  },
+  {
+    "id": "sample-public-goods",
+    "name": "grant-signal-board",
+    "owner_did": "did:key:z6MkpPublicGoodsScout",
+    "description": "Public goods grant tracker with community signal badges",
+    "star_count": 4,
+    "clone_url": "https://node.gitlawb.com/z6MkpPublicGoodsScout/grant-signal-board.git",
+    "updated_at": "2026-05-18T08:18:00.000000000+00:00"
+  }
+]

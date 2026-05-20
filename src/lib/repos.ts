@@ -4,6 +4,7 @@ import type { Category, NetworkSignal, Repo, RepoApiItem } from '../types/domain
 
 export const NODE_API = 'https://node.gitlawb.com/api/v1/repos'
 const NODE_PROXY_API = '/api/gitlawb/repos'
+const BUNDLED_REPOS_API = '/data/repos.json'
 const REPO_CACHE_KEY = 'scoutLawb.repoCache'
 const LEGACY_REPO_CACHE_KEY = 'gitlawbIdeaScout.repoCache'
 const REPO_CACHE_TTL = 5 * 60 * 1000
@@ -88,12 +89,19 @@ async function fetchRepoItems(url: string, signal: AbortSignal): Promise<Repo[]>
     signal,
   })
 
-  if (!response.ok) throw new Error(`${url === NODE_PROXY_API ? 'GitLawb proxy' : 'GitLawb API'} ${response.status}`)
+  if (!response.ok) {
+    const label = url === NODE_PROXY_API ? 'GitLawb proxy' : url === BUNDLED_REPOS_API ? 'Bundled snapshot' : 'GitLawb API'
+    throw new Error(`${label} ${response.status}`)
+  }
 
   const payload = (await response.json()) as RepoApiItem[] | { repos?: RepoApiItem[] }
   const repos = Array.isArray(payload) ? payload : payload.repos || []
 
   return repos.map(normalizeRepo)
+}
+
+export async function fetchBundledRepos(signal: AbortSignal): Promise<Repo[]> {
+  return fetchRepoItems(BUNDLED_REPOS_API, signal)
 }
 
 export async function fetchPublicRepos(signal: AbortSignal, cachedRepos: Repo[] = []): Promise<Repo[]> {

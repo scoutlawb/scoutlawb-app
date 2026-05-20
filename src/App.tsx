@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Activity, TrendingUp } from 'lucide-react'
+import { Activity, AtSign, GitBranch, TrendingUp } from 'lucide-react'
 import { BuilderControls } from './components/BuilderControls'
 import { CompareTray } from './components/CompareTray'
 import { Header } from './components/Header'
@@ -226,7 +226,9 @@ function App() {
                   //{' '}
                   {mainView === 'ideas'
                     ? `${ideas.length} ranked · Playground-ready`
-                    : `${filteredRepos.length} repos · ${status.kind === 'live' ? 'live node' : 'sample data'}`}
+                    : `${filteredRepos.length} repos · ${
+                        status.kind === 'live' ? 'live node' : status.kind === 'snapshot' ? 'snapshot data' : 'sample data'
+                      }`}
                 </span>
               </div>
               <div className="view-tabs" role="tablist" aria-label="Build intelligence view">
@@ -298,6 +300,19 @@ function App() {
           <CompareTray ideas={comparedIdeas} onClear={() => setCompareIds([])} />
         </div>
       </main>
+      <footer className="app-footer">
+        <span>ScoutLawb public build</span>
+        <div className="footer-links">
+          <a href="https://github.com/scoutlawb/scoutlawb-app" target="_blank" rel="noreferrer">
+            <GitBranch size={14} />
+            scoutlawb/scoutlawb-app
+          </a>
+          <a href="https://x.com/scoutlawb" target="_blank" rel="noreferrer">
+            <AtSign size={14} />
+            @scoutlawb
+          </a>
+        </div>
+      </footer>
       <Toast toast={toast} />
     </div>
   )
