@@ -412,12 +412,12 @@ p {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   border-top: 1px solid var(--line);
-  background: var(--surface-2);
-  padding: 9px 12px;
+  background: rgba(8, 12, 9, 0.86);
+  padding: 6px 12px;
   color: var(--dim);
-  font-size: 0.62rem;
+  font-size: 0.58rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -428,26 +428,20 @@ p {
   align-items: center;
   flex-wrap: wrap;
   justify-content: flex-end;
-  gap: 8px;
+  gap: 10px;
   min-width: 0;
 }
 
 .footer-links a {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  min-height: 29px;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius);
-  padding: 0 10px;
-  color: var(--text);
-  background: #08100c;
-  letter-spacing: 0;
-  text-transform: none;
+  gap: 5px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .footer-links a:hover {
-  border-color: rgba(94, 234, 212, 0.62);
   color: var(--cyan);
 }
 

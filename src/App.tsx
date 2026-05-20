@@ -301,15 +301,15 @@ function App() {
         </div>
       </main>
       <footer className="app-footer">
-        <span>ScoutLawb public build</span>
+        <span>ScoutLawb</span>
         <div className="footer-links">
           <a href="https://github.com/scoutlawb/scoutlawb-app" target="_blank" rel="noreferrer">
             <GitBranch size={14} />
-            scoutlawb/scoutlawb-app
+            GitHub
           </a>
           <a href="https://x.com/scoutlawb" target="_blank" rel="noreferrer">
             <AtSign size={14} />
-            @scoutlawb
+            X
           </a>
         </div>
       </footer>
