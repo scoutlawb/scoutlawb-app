@@ -39,7 +39,10 @@ export function OpportunityRadar({ signal, status }: OpportunityRadarProps) {
         <Metric label="Recently updated" value={signal.recentlyUpdated.toLocaleString()} />
         <Metric label="Stars tracked" value={signal.starsTracked.toLocaleString()} />
         <Metric label="Top category" value={categoryLabel(signal.topCategory)} />
-        <Metric label="Signal source" value={status.kind === 'live' ? 'Live node' : 'Fallback sample'} />
+        <Metric
+          label="Signal source"
+          value={status.kind === 'live' ? 'Live node' : status.kind === 'snapshot' ? 'Prefetched snapshot' : 'Fallback sample'}
+        />
       </div>
 
       <div className="radar-grid">

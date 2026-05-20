@@ -38,7 +38,13 @@ export function Header({ status, signal, onRefresh }: HeaderProps) {
           value={
             <span className="inline-status">
               <i className={status.kind === 'live' ? 'ok' : status.kind === 'loading' ? 'warn' : 'sample'} />
-              {status.kind === 'loading' ? 'syncing' : status.kind === 'live' ? 'healthy' : 'sample'}
+              {status.kind === 'loading'
+                ? 'syncing'
+                : status.kind === 'live'
+                  ? 'healthy'
+                  : status.kind === 'snapshot'
+                    ? 'snapshot'
+                    : 'sample'}
             </span>
           }
         />

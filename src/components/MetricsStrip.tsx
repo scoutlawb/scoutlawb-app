@@ -10,7 +10,11 @@ type MetricsStripProps = {
 
 export function MetricsStrip({ signal, status, opportunityCount, savedCount }: MetricsStripProps) {
   const metrics = [
-    { label: 'Repos indexed', value: signal.totalRepos.toLocaleString(), delta: status.kind === 'live' ? 'live node' : 'offline sample' },
+    {
+      label: 'Repos indexed',
+      value: signal.totalRepos.toLocaleString(),
+      delta: status.kind === 'live' ? 'live node' : status.kind === 'snapshot' ? 'prefetched snapshot' : 'offline sample',
+    },
     { label: 'Updated 24h', value: signal.updated24h.toLocaleString(), delta: `${signal.recentlyUpdated} this week`, positive: true },
     { label: 'Stars tracked', value: signal.starsTracked.toLocaleString(), delta: 'public signal', positive: true },
     { label: 'Top category', value: categoryLabel(signal.topCategory), delta: `${signal.categoryDensity[signal.topCategory]}% share` },

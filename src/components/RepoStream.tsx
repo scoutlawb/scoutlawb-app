@@ -54,7 +54,7 @@ export function RepoStream({
           </div>
           <div className="stream-state">
             <i className={status.kind === 'live' ? 'ok' : 'sample'} />
-            {status.kind === 'live' ? 'live' : status.kind === 'loading' ? 'syncing' : 'sample'}
+            {status.kind === 'live' ? 'live' : status.kind === 'loading' ? 'syncing' : status.kind === 'snapshot' ? 'snapshot' : 'sample'}
           </div>
         </div>
       ) : null}
