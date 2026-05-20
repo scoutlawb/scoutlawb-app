@@ -7,7 +7,7 @@ type ChatResponse = {
 }
 
 const baseUrl = import.meta.env.VITE_MIMO_BASE_URL || 'https://token-plan-sgp.xiaomimimo.com/v1'
-const model = import.meta.env.VITE_MIMO_MODEL || 'mimo-v2.5-pro'
+const model = (import.meta.env.VITE_MIMO_MODEL || 'mimo-v2.5-pro').toLowerCase()
 const apiKey = import.meta.env.VITE_MIMO_API_KEY || ''
 
 export const aiConfig = {
@@ -91,7 +91,7 @@ export async function generateMimoIdeas({
       body: JSON.stringify({
         model,
         temperature: 0.45,
-        max_tokens: 900,
+        max_tokens: 1600,
         messages: [
           {
             role: 'system',
@@ -111,7 +111,11 @@ export async function generateMimoIdeas({
     window.clearTimeout(timeout)
   }
 
-  if (!response.ok) throw new Error(`MiMo API ${response.status}`)
+  if (!response.ok) {
+    const errorText = await response.text().catch(() => '')
+    const message = errorText.match(/"message"\s*:\s*"([^"]+)"/)?.[1]
+    throw new Error(message ? `MiMo API ${response.status}: ${message}` : `MiMo API ${response.status}`)
+  }
 
   const payload = (await response.json()) as ChatResponse
   const text = assistantText(payload)
