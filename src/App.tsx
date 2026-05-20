@@ -29,6 +29,7 @@ const defaultPreferences: BuilderPreferences = {
 }
 
 const REPOS_PER_PAGE = 10
+const IDEAS_PER_PAGE = 10
 
 const isCategory = (value: unknown): value is Category =>
   typeof value === 'string' && categories.some((category) => category.id === value)
@@ -95,6 +96,7 @@ function App() {
   const [repoSort, setRepoSort] = useLocalStorage<RepoSort>('scoutLawb.repoSort', 'latest')
   const [mainView, setMainView] = useLocalStorage<MainView>('scoutLawb.mainView', 'ideas')
   const [repoPage, setRepoPage] = useState(1)
+  const [ideaPage, setIdeaPage] = useState(1)
   const [savedIds, setSavedIds] = useLocalStorage<string[]>('scoutLawb.savedIdeas', [])
   const [compareIds, setCompareIds] = useLocalStorage<string[]>('scoutLawb.compareIds', [])
   const [selectedId, setSelectedId] = useState<string>()
@@ -112,6 +114,9 @@ function App() {
   )
   const selectedIdea = ideas.find((idea) => idea.id === selectedId) || ideas[0]
   const comparedIdeas = ideas.filter((idea) => compareIds.includes(idea.id))
+  const totalIdeaPages = Math.max(1, Math.ceil(ideas.length / IDEAS_PER_PAGE))
+  const clampedIdeaPage = Math.min(ideaPage, totalIdeaPages)
+  const pagedIdeas = ideas.slice((clampedIdeaPage - 1) * IDEAS_PER_PAGE, clampedIdeaPage * IDEAS_PER_PAGE)
   const filteredRepos = useMemo(() => {
     const query = preferences.query.trim().toLowerCase()
     const sorted = repos.filter((repo) => {
@@ -258,12 +263,17 @@ function App() {
             </div>
             {mainView === 'ideas' ? (
               <IdeaList
-                ideas={ideas}
+                ideas={pagedIdeas}
                 selectedId={selectedIdea.id}
                 savedIds={savedIds}
                 compareIds={compareIds}
                 onSelect={setSelectedId}
                 onCopyPrompt={(idea) => void copyText(idea.prompt, 'Playground prompt copied')}
+                currentPage={clampedIdeaPage}
+                totalPages={totalIdeaPages}
+                totalIdeas={ideas.length}
+                startRank={(clampedIdeaPage - 1) * IDEAS_PER_PAGE + 1}
+                onPageChange={setIdeaPage}
                 showHeading={false}
               />
             ) : (

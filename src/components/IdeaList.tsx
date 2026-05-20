@@ -9,6 +9,11 @@ type IdeaListProps = {
   compareIds: string[]
   onSelect: (ideaId: string) => void
   onCopyPrompt: (idea: Idea) => void
+  currentPage: number
+  totalPages: number
+  totalIdeas: number
+  startRank: number
+  onPageChange: (page: number) => void
   showHeading?: boolean
 }
 
@@ -19,6 +24,11 @@ export function IdeaList({
   compareIds,
   onSelect,
   onCopyPrompt,
+  currentPage,
+  totalPages,
+  totalIdeas,
+  startRank,
+  onPageChange,
   showHeading = true,
 }: IdeaListProps) {
   return (
@@ -41,7 +51,7 @@ export function IdeaList({
               className={`idea-card ${selectedId === idea.id ? 'active' : ''}`}
             >
               <button type="button" className="idea-select" onClick={() => onSelect(idea.id)}>
-                <span className="rank">#{index + 1}</span>
+                <span className="rank">#{startRank + index}</span>
                 <span className="idea-card-body">
                   <span className="idea-meta-line">
                     <em>{categoryShort(idea.category)}</em>
@@ -104,6 +114,23 @@ export function IdeaList({
             <span>Loosen the filters or clear the search intent.</span>
           </div>
         )}
+      </div>
+
+      <div className="repo-pager" aria-label="Idea pagination">
+        <button type="button" className="console-button subtle" disabled={currentPage <= 1} onClick={() => onPageChange(currentPage - 1)}>
+          previous
+        </button>
+        <span>
+          {ideas.length} shown · page {currentPage} / {totalPages} · {totalIdeas.toLocaleString()} ideas
+        </span>
+        <button
+          type="button"
+          className="console-button subtle"
+          disabled={currentPage >= totalPages}
+          onClick={() => onPageChange(currentPage + 1)}
+        >
+          next
+        </button>
       </div>
     </section>
   )
