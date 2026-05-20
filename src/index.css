@@ -107,12 +107,11 @@ p {
 }
 
 .brand-mark {
-  width: 30px;
-  height: 30px;
-  flex: 0 0 30px;
-  border: 1px solid #284536;
-  border-radius: var(--radius);
-  background: #050807;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border-radius: 2px;
+  background: #000;
   object-fit: cover;
 }
 
