@@ -2,7 +2,7 @@ import { categoryLabel } from '../data/categories'
 import type { BuilderPreferences, Idea, NetworkSignal, Repo } from '../types/domain'
 
 type ChatResponse = {
-  choices?: { message?: { content?: string; reasoning_content?: string }; text?: string }[]
+  choices?: { finish_reason?: string; message?: { content?: string; reasoning_content?: string }; text?: string }[]
   output_text?: string
 }
 
@@ -34,14 +34,43 @@ function parseJson(text: string) {
     .replace(/```$/i, '')
     .trim()
 
-  try {
-    return JSON.parse(cleaned)
-  } catch {
-    const start = cleaned.indexOf('{')
-    const end = cleaned.lastIndexOf('}')
-    if (start >= 0 && end > start) return JSON.parse(cleaned.slice(start, end + 1))
-    throw new Error('AI response was not valid JSON')
+  const variants = [cleaned]
+  if (cleaned.startsWith('{{') && cleaned.endsWith('}}')) variants.push(cleaned.slice(1, -1))
+
+  const start = cleaned.indexOf('{')
+  if (start >= 0) {
+    let depth = 0
+    let inString = false
+    let escaped = false
+    for (let index = start; index < cleaned.length; index += 1) {
+      const char = cleaned[index]
+      if (escaped) {
+        escaped = false
+      } else if (char === '\\') {
+        escaped = true
+      } else if (char === '"') {
+        inString = !inString
+      } else if (!inString && char === '{') {
+        depth += 1
+      } else if (!inString && char === '}') {
+        depth -= 1
+        if (depth === 0) {
+          variants.push(cleaned.slice(start, index + 1))
+          break
+        }
+      }
+    }
   }
+
+  for (const variant of variants) {
+    try {
+      return JSON.parse(variant)
+    } catch {
+      // Try the next cleaned variant.
+    }
+  }
+
+  throw new Error('AI response was not valid JSON')
 }
 
 export async function generateMimoIdeas({
@@ -61,23 +90,23 @@ export async function generateMimoIdeas({
     .join('\n')
 
   const prompt = [
-    'Return final minified JSON only. No analysis, no markdown.',
-    'The product is ScoutLawb. Generate exactly 3 GitLawb Playground app ideas, not repo explorer ideas.',
-    'Keep all strings under 90 chars.',
-    'Never use placeholder values like "short name", "...", "one line", or "kebab-case".',
+    'Return JSON only. Do not explain.',
+    'Create exactly 3 concise app ideas for GitLawb Playground.',
+    'They must be app/product ideas, not repo explorer ideas.',
     preferences.customIdeaPrompt.trim()
-      ? `Custom direction: ${preferences.customIdeaPrompt.trim()}`
-      : 'Infer opportunities from goals and network signal.',
-    'Return an object with an ideas array. Each idea needs keys: id, name, category, pitch, targetUser, whyGitLawb, whyNow, difficulty, usefulnessScore, shareabilityScore, crowdedness, crowdednessNote.',
-    `Selected goals: ${preferences.goals.join(', ') || 'none'}.`,
-    `Selected categories: ${preferences.categories.join(', ') || 'all'}.`,
-    `Difficulty filter: ${preferences.difficulty}.`,
-    `Network: ${signal.totalRepos} repos, ${signal.recentlyUpdated} recently updated, top category ${categoryLabel(signal.topCategory)}.`,
-    `Repo sample: ${repoSample}`,
+      ? `Custom direction: ${preferences.customIdeaPrompt.trim().slice(0, 240)}`
+      : 'Use goals and network signal.',
+    'JSON shape: {"ideas":[{"id":"kebab","name":"Name","category":"ai-agents","pitch":"short","targetUser":"short","whyGitLawb":"short","whyNow":"short","difficulty":"easy","usefulnessScore":88,"shareabilityScore":82,"crowdedness":"open","crowdednessNote":"short"}]}',
+    'Allowed category values: ai-agents, web3-crypto, developer-utilities, productivity, games-experiments, education-knowledge, community-public-goods.',
+    'Allowed difficulty: easy, medium, hard. Allowed crowdedness: open, warming, crowded.',
+    'Use numeric scores from 1 to 100. Keep each string under 120 chars.',
+    `Goals: ${preferences.goals.join(', ') || 'none'}. Categories: ${preferences.categories.join(', ') || 'all'}. Difficulty: ${preferences.difficulty}.`,
+    `Network: ${signal.totalRepos} repos, ${signal.recentlyUpdated} recent, top ${categoryLabel(signal.topCategory)}.`,
+    `Repo sample:\n${repoSample}`,
   ].join('\n\n')
 
   const controller = new AbortController()
-  const timeout = window.setTimeout(() => controller.abort(), 30_000)
+  const timeout = window.setTimeout(() => controller.abort(), 75_000)
 
   let response: Response
   try {
@@ -90,13 +119,12 @@ export async function generateMimoIdeas({
       },
       body: JSON.stringify({
         model,
-        temperature: 0.45,
-        max_tokens: 1600,
+        temperature: 0.2,
+        max_tokens: 4000,
         messages: [
           {
             role: 'system',
-            content:
-              'You are a GitLawb Playground product strategist. Write compact, practical, buildable project ideas. Return final JSON only.',
+            content: 'You are a concise product strategist. Return valid JSON only.',
           },
           { role: 'user', content: prompt },
         ],
