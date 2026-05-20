@@ -1,13 +1,16 @@
 const GITLAWB_REPOS_API = 'https://node.gitlawb.com/api/v1/repos'
 
-async function sendSnapshot(response, status = 200, reason = 'snapshot') {
-  const fs = await import('node:fs/promises')
-  const path = await import('node:path')
-  const snapshotPath = path.join(process.cwd(), 'public', 'data', 'repos.json')
-  const body = await fs.readFile(snapshotPath, 'utf8')
+async function sendSnapshot(request, response, status = 200, reason = 'snapshot') {
+  const host = request.headers['x-forwarded-host'] || request.headers.host
+  const protocol = request.headers['x-forwarded-proto'] || 'https'
+  const snapshotUrl = `${protocol}://${host}/data/repos.json`
+  const snapshot = await fetch(snapshotUrl, {
+    headers: { Accept: 'application/json' },
+  })
+  const body = await snapshot.text()
 
   response.status(status)
-  response.setHeader('Content-Type', 'application/json; charset=utf-8')
+  response.setHeader('Content-Type', snapshot.headers.get('content-type') || 'application/json; charset=utf-8')
   response.setHeader('X-ScoutLawb-Source', reason)
   response.send(body)
 }
@@ -30,7 +33,7 @@ export default async function handler(request, response) {
   }
 
   const controller = new AbortController()
-  const timeout = setTimeout(() => controller.abort(), 15000)
+  const timeout = setTimeout(() => controller.abort(), 6500)
 
   try {
     const upstream = await fetch(GITLAWB_REPOS_API, {
@@ -40,7 +43,7 @@ export default async function handler(request, response) {
     const body = await upstream.text()
 
     if (!upstream.ok) {
-      await sendSnapshot(response, 200, `snapshot-fallback: upstream ${upstream.status}`)
+      await sendSnapshot(request, response, 200, `snapshot-fallback: upstream ${upstream.status}`)
       return
     }
 
@@ -49,7 +52,7 @@ export default async function handler(request, response) {
     response.setHeader('X-ScoutLawb-Source', 'live')
     response.send(body)
   } catch (error) {
-    await sendSnapshot(response, 200, error instanceof Error ? `snapshot-fallback: ${error.message}` : 'snapshot-fallback')
+    await sendSnapshot(request, response, 200, error instanceof Error ? `snapshot-fallback: ${error.message}` : 'snapshot-fallback')
   } finally {
     clearTimeout(timeout)
   }
