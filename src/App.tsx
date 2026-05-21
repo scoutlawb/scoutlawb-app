@@ -11,12 +11,20 @@ import { RepoStream } from './components/RepoStream'
 import { Toast } from './components/Toast'
 import { categories } from './data/categories'
 import { generateMimoIdeas } from './lib/ai'
-import { buildLaunchBrief } from './lib/prompts'
+import { buildLaunchBrief, buildPlaygroundPrompt } from './lib/prompts'
 import { repoSignalScore } from './lib/repos'
 import { recommendIdeas } from './lib/scoring'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { useRepos } from './hooks/useRepos'
-import type { BuilderPreferences, Category, Difficulty, Idea, RepoSort, Toast as ToastType } from './types/domain'
+import type {
+  BuilderPreferences,
+  Category,
+  Difficulty,
+  Idea,
+  NetworkSignal,
+  RepoSort,
+  Toast as ToastType,
+} from './types/domain'
 
 type MainView = 'ideas' | 'repos'
 
@@ -54,7 +62,13 @@ function cleanAiText(value: unknown, fallback: string) {
   return trimmed
 }
 
-function coerceMimoIdea(partial: Partial<Idea>, index: number, localFallback: Idea): Idea {
+function coerceMimoIdea(
+  partial: Partial<Idea>,
+  index: number,
+  localFallback: Idea,
+  preferences: BuilderPreferences,
+  signal: NetworkSignal,
+): Idea {
   const category = isCategory(partial.category) ? partial.category : localFallback.category
   const difficulty = normalizeDifficulty(partial.difficulty)
   const name = cleanAiText(partial.name, localFallback.name)
@@ -85,6 +99,10 @@ function coerceMimoIdea(partial: Partial<Idea>, index: number, localFallback: Id
     crowdednessNote: cleanAiText(partial.crowdednessNote, localFallback.crowdednessNote),
     prompt: cleanAiText(partial.prompt, localFallback.prompt.replace(localFallback.name, name)),
     source: 'mimo',
+  }
+
+  if (!partial.prompt) {
+    idea.prompt = buildPlaygroundPrompt(idea, preferences, signal)
   }
 
   return idea
@@ -179,7 +197,9 @@ function App() {
     setIsGeneratingAI(true)
     try {
       const generated = await generateMimoIdeas({ repos, preferences, signal })
-      const coerced = generated.slice(0, 3).map((idea, index) => coerceMimoIdea(idea, index, localIdeas[index] || localIdeas[0]))
+      const coerced = generated
+        .slice(0, 3)
+        .map((idea, index) => coerceMimoIdea(idea, index, localIdeas[index] || localIdeas[0], preferences, signal))
       if (!coerced.length) throw new Error('MiMo returned no ideas')
       setMimoIdeas(coerced)
       setSelectedId(coerced[0].id)

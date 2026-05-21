@@ -85,28 +85,34 @@ export async function generateMimoIdeas({
   if (!apiKey) throw new Error('MiMo API key is not configured')
 
   const repoSample = repos
-    .slice(0, 5)
-    .map((repo) => `${repo.name}:${categoryLabel(repo.category)}:${repo.stars}`)
-    .join('\n')
+    .slice(0, 3)
+    .map((repo) => `${repo.name}|${categoryLabel(repo.category)}|${repo.stars}`)
+    .join('; ')
+
+  const categorySignal = Object.entries(signal.categoryDensity)
+    .sort(([, densityA], [, densityB]) => densityB - densityA)
+    .slice(0, 4)
+    .map(([category, density]) => `${category}:${Math.round(density * 100)}%`)
+    .join(', ')
 
   const prompt = [
-    'Return JSON only. Do not explain.',
-    'Create exactly 3 concise app ideas for GitLawb Playground.',
-    'They must be app/product ideas, not repo explorer ideas.',
+    'Return one minified JSON object only. No markdown. No prose.',
+    'Create exactly 3 fast app idea seeds for GitLawb Playground.',
+    'Avoid repo explorer ideas. Prefer buildable, demo-ready apps.',
     preferences.customIdeaPrompt.trim()
-      ? `Custom direction: ${preferences.customIdeaPrompt.trim().slice(0, 240)}`
+      ? `Custom direction: ${preferences.customIdeaPrompt.trim().slice(0, 180)}`
       : 'Use goals and network signal.',
-    'JSON shape: {"ideas":[{"id":"kebab","name":"Name","category":"ai-agents","pitch":"short","targetUser":"short","whyGitLawb":"short","whyNow":"short","difficulty":"easy","usefulnessScore":88,"shareabilityScore":82,"crowdedness":"open","crowdednessNote":"short"}]}',
+    'Schema: {"ideas":[{"id":"kebab","name":"Short Name","category":"ai-agents","pitch":"one line","targetUser":"specific builder","whyGitLawb":"one line","whyNow":"one line","difficulty":"easy","usefulnessScore":88,"shareabilityScore":82,"crowdedness":"open","crowdednessNote":"one line"}]}',
     'Allowed category values: ai-agents, web3-crypto, developer-utilities, productivity, games-experiments, education-knowledge, community-public-goods.',
     'Allowed difficulty: easy, medium, hard. Allowed crowdedness: open, warming, crowded.',
-    'Use numeric scores from 1 to 100. Keep each string under 120 chars.',
+    'Use numeric scores from 1 to 100. Keep every string under 90 chars.',
     `Goals: ${preferences.goals.join(', ') || 'none'}. Categories: ${preferences.categories.join(', ') || 'all'}. Difficulty: ${preferences.difficulty}.`,
-    `Network: ${signal.totalRepos} repos, ${signal.recentlyUpdated} recent, top ${categoryLabel(signal.topCategory)}.`,
-    `Repo sample:\n${repoSample}`,
+    `Network: ${signal.totalRepos} repos, ${signal.updated24h} updated 24h, top ${categoryLabel(signal.topCategory)}.`,
+    `Category density: ${categorySignal}. Repo sample: ${repoSample}.`,
   ].join('\n\n')
 
   const controller = new AbortController()
-  const timeout = window.setTimeout(() => controller.abort(), 75_000)
+  const timeout = window.setTimeout(() => controller.abort(), 35_000)
 
   let response: Response
   try {
@@ -119,12 +125,22 @@ export async function generateMimoIdeas({
       },
       body: JSON.stringify({
         model,
-        temperature: 0.2,
-        max_tokens: 4000,
+        temperature: 0.15,
+        top_p: 0.8,
+        max_completion_tokens: 900,
+        frequency_penalty: 0,
+        presence_penalty: 0,
+        thinking: {
+          type: 'disabled',
+        },
+        response_format: {
+          type: 'json_object',
+        },
         messages: [
           {
             role: 'system',
-            content: 'You are a concise product strategist. Return valid JSON only.',
+            content:
+              'You are a terse product strategist. Output valid compact JSON only. Do not include reasoning text.',
           },
           { role: 'user', content: prompt },
         ],
