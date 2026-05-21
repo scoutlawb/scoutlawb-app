@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Activity, AtSign, GitBranch, TrendingUp } from 'lucide-react'
+import { Activity, AtSign, GitBranch, Network, TrendingUp } from 'lucide-react'
 import { BuilderControls } from './components/BuilderControls'
 import { CompareTray } from './components/CompareTray'
 import { Header } from './components/Header'
@@ -333,6 +333,14 @@ function App() {
       <footer className="app-footer">
         <span>ScoutLawb</span>
         <div className="footer-links">
+          <a
+            href="https://gitlawb.com/node/repos/z6MkqeF75fjrchXvoRwXqJpStq25iegx4Umh1pH1cN7cqqnG/scoutlawb?tab=code"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Network size={14} />
+            GitLawb
+          </a>
           <a href="https://github.com/scoutlawb/scoutlawb-app" target="_blank" rel="noreferrer">
             <GitBranch size={14} />
             GitHub
